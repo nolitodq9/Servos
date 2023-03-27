@@ -2,6 +2,12 @@
  * Proba de funcionamento dun servomotor
  * empregando a librería <Servo.h> e 
  * ligado a un potenciómetro.
+   
+   Entradas: pin analóxico A5
+   Saídas: pin pwm 3
+     
+   Autor: Manuel Dominguez Queiruga
+   Data: 25/03/2021
  */
 
 #include <Servo.h>  // introducimos a biblioteca servo 
