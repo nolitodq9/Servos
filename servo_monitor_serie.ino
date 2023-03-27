@@ -34,16 +34,16 @@ void loop(){
 							//comprobamos se hai orde no teclado
   if(Serial.available())  {				// Si o monitor serie está dispoñible, neste caso se estamos escribindo 
     orde = Serial.readStringUntil('\n');		//  Orde significa leer o que escribo no monitor serie
-    orde.toLowerCase();					//
+    orde.toLowerCase();					// Isto é para que lea o que escribimos no monitor serie
     if(orde.equals("esquerda")) angulo = 180;		// si escribimos "esquerda" o servo posiciónase no angulo de 180º"
     else if(orde.equals("centro esquerda")) angulo = 135;// si escribimos "centro esquerda" o servo posiciónase no angulo de 135º"
     else if(orde.equals("centro")) angulo = 90;		// si escribimos "centro" o servo posiciónase no angulo de 90º"
     else if(orde.equals("centro dereita")) angulo = 45;  // si escribimos "centro dereita" o servo posiciónase no angulo de 45º"
     else if(orde.equals("dereita")) angulo = 0;		// si escribimos "dereita" o servo posiciónase no angulo de 180º"
             else{					// senon fai o seguinte.. 
-              int tmp = orde.toInt();			
-              if(tmp>= 0 && tmp <=180) angulo = tmp;
-              else angulo = 0;
+              int tmp = orde.toInt();			// o valor tmp é igual ao escrito na entrada, esto é para poñer o servo na posición exacta que escriba
+              if(tmp>= 0 && tmp <=180) angulo = tmp;	// función que lle fai que o servo se sitúe na posicion que lle indicamos
+              else angulo = 0;				// se non escribimos o angulo ten que ser cero
             }
                  
 }
@@ -51,7 +51,7 @@ void loop(){
               
               // Lectura do potenciometro
              angulo = analogRead(POT);			// Se non se escribe no monitor serie, enton que ángulo sexa o valor do potenciómetro
-             angulo = map(angulo , 0, 1023, 0, 180); 
+             angulo = map(angulo , 0, 1023, 0, 180); 	// aqui mapeamos os valores do potenciómetro
             }
             
             //Actualiza servo
