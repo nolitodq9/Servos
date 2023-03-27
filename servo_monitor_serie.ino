@@ -1,8 +1,14 @@
+/* Práctica na que se vai controlar a posición dun servomotor de dúas maneiras. A primeira a través do monitor
+serie e a segunda a través do potenciómetro.
+
+Entradas: pin analóxico A5 e Monitor serie
+Saídas: pin pwm 3
+
+Autor: Manuel Dominguez Queiruga
+Data: 25/03/2023 */
 
 
-
-
-#include <Servo.h>
+#include <Servo.h>		// introducimos a biblioteca servo para poder manexar o servomotor
 
 //Pin de control do Servo
 #define CTRL 3
@@ -12,45 +18,45 @@
 
 
 //Declaramos o obxecto motor da clase servo
-Servo motor;
-int angulo = 0;
-int veloc = 3000;
+Servo motor;		// Chamámolle servo ao motor para que sepa o que está manexando
+int angulo = 0;		// dámolle un valor de 0º ao ángulo
+int veloc = 3000;	// e a velocidade queremos que sexa 3000
 
-String orde = "";
+String orde = "";	// Aqui o que se fai é dicir que imos comunicarnos de forma escrita	
 
 
 void setup() {
-   motor.attach(CTRL);
-   Serial.begin(9600);
+   motor.attach(CTRL);		//Está conectando a variable do servo ao pin asignado (3)
+   Serial.begin(9600);		// a velocidade de comunicación será de 9600 baudios
 }
 
 void loop(){
-	//Comprobamos se hai orde no teclado
-  if(Serial.available())  {
-    orde = Serial.readStringUntil('\n');
-    orde.toLowerCase();
-    if(orde.equals("esquerda")) angulo = 180;
-    else if(orde.equals("centro esquerda")) angulo = 135;
-    else if(orde.equals("centro")) angulo = 90;
-    else if(orde.equals("centro dereita")) angulo = 45;  
-    else if(orde.equals("dereita")) angulo = 0;
-            else{
-              int tmp = orde.toInt();
+							//comprobamos se hai orde no teclado
+  if(Serial.available())  {				// Si o monitor serie está dispoñible, neste caso se estamos escribindo 
+    orde = Serial.readStringUntil('\n');		//  Orde significa leer o que escribo no monitor serie
+    orde.toLowerCase();					//
+    if(orde.equals("esquerda")) angulo = 180;		// si escribimos "esquerda" o servo posiciónase no angulo de 180º"
+    else if(orde.equals("centro esquerda")) angulo = 135;// si escribimos "centro esquerda" o servo posiciónase no angulo de 135º"
+    else if(orde.equals("centro")) angulo = 90;		// si escribimos "centro" o servo posiciónase no angulo de 90º"
+    else if(orde.equals("centro dereita")) angulo = 45;  // si escribimos "centro dereita" o servo posiciónase no angulo de 45º"
+    else if(orde.equals("dereita")) angulo = 0;		// si escribimos "dereita" o servo posiciónase no angulo de 180º"
+            else{					// senon fai o seguinte.. 
+              int tmp = orde.toInt();			
               if(tmp>= 0 && tmp <=180) angulo = tmp;
               else angulo = 0;
             }
                  
 }
-            else{
+            else{					// senon fai isto
               
               // Lectura do potenciometro
-             angulo = analogRead(POT);
+             angulo = analogRead(POT);			// Se non se escribe no monitor serie, enton que ángulo sexa o valor do potenciómetro
              angulo = map(angulo , 0, 1023, 0, 180); 
             }
             
             //Actualiza servo
-            motor.write(angulo);
-            delay(veloc);
-            Serial.println(angulo);
+            motor.write(angulo);	// Aquí decimos que o motor se posicione no valor de ángulo 
+            delay(veloc);		// que espere o tempo veloc, definido ao principio o valor
+            Serial.println(angulo);	// que imprima o valor do angulo no monitor serie
             
 }            
